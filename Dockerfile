@@ -35,11 +35,6 @@ ARG ARG_VNC_USER
 
 ENV VNC_USER=${ARG_VNC_USER:-headless:headless}
 
-ENV TZ=Asia/Shanghai
-ENV LANG=zh_CN.UTF-8
-ENV LANGUAGE=zh_CN:zh:en_US:en
-ENV LC_ALL=zh_CN.UTF-8
-
 WORKDIR ${HOME}
 SHELL ["/bin/bash", "-c"]
 
@@ -110,6 +105,11 @@ COPY [ "./src/startup/version_sticker.sh", "${STARTUPDIR}/" ]
 RUN \
     chmod a+wx "${STARTUPDIR}"/version_sticker.sh \
     && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}"
+
+ENV TZ=Asia/Shanghai
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN:zh:en_US:en
+ENV LC_ALL=zh_CN.UTF-8
 
 ### Switch to non-root user
 USER ${VNC_USER}
