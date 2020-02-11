@@ -107,9 +107,9 @@ RUN \
     && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}"
 
 ENV TZ=Asia/Shanghai
-ENV LANG=zh_CN.UTF-8
-ENV LANGUAGE=zh_CN:zh:en_US:en
-ENV LC_ALL=zh_CN.UTF-8
+#ENV LANG=zh_CN.UTF-8
+#ENV LANGUAGE=zh_CN:zh:en_US:en
+#ENV LC_ALL=zh_CN.UTF-8
 
 ### Switch to non-root user
 USER ${VNC_USER}
