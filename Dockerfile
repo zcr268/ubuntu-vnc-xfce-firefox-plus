@@ -14,7 +14,7 @@ USER 0
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y firefox
-RUN apt-get install ttf-wqy-microhei ttf-wqy-microhei ttf-wqy-zenhei kde-l10n-zhcn xfonts-wqy
+RUN apt-get install -y ttf-wqy-microhei ttf-wqy-microhei ttf-wqy-zenhei kde-l10n-zhcn xfonts-wqy
 RUN rm -rf /var/lib/apt/lists/*
 
 ### Alternatively install an explicit Firefox version
