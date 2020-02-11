@@ -13,7 +13,7 @@ USER 0
 ### 'apt-get clean' runs automatically
 RUN apt-get update -y
 RUN apt-get upgrade -y
-RUN apt-get updateapt-get install -y firefox
+RUN apt-get install -y firefox
 RUN apt-get install ttf-wqy-microhei ttf-wqy-microhei ttf-wqy-zenhei kde-l10n-zhcn xfonts-wqy
 RUN rm -rf /var/lib/apt/lists/*
 
