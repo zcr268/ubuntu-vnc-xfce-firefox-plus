@@ -57,9 +57,6 @@ COPY [ "./src/create_user_and_fix_permissions.sh", "./src/patch_vnc_startup.*", 
 COPY [ "./src/firefox.plus/*.js", "./src/firefox.plus/*.sh", "./firefox.plus/"]
 COPY [ "./src/firefox.plus/*.svg", "/usr/share/icons/hicolor/scalable/apps/"]
 
-### Copy pre-configured Firefox profile
-COPY [ "./src/firefox/profile/", "./.mozilla/" ]
-
 ### Change owner
 RUN chown -R ${VNC_USER} ./.mozilla
 
