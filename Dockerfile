@@ -11,9 +11,11 @@ FROM accetto/ubuntu-vnc-xfce:${BASETAG} as stage-install
 USER 0
 
 ### 'apt-get clean' runs automatically
-RUN apt-get update && apt-get install -y \
-        firefox \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update 
+RUN apt-get upgrade
+RUN apt-get updateapt-get install -y firefox
+RUN apt-get install ttf-wqy-microhei ttf-wqy-microhei ttf-wqy-zenhei kde-l10n-zhcn xfonts-wqy
+RUN rm -rf /var/lib/apt/lists/*
 
 ### Alternatively install an explicit Firefox version
 ### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
@@ -32,6 +34,11 @@ FROM stage-install as stage-config
 ARG ARG_VNC_USER
 
 ENV VNC_USER=${ARG_VNC_USER:-headless:headless}
+
+ENV TZ=Asia/Shanghai
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN:zh:en_US:en
+ENV LC_ALL=zh_CN.UTF-8
 
 WORKDIR ${HOME}
 SHELL ["/bin/bash", "-c"]
