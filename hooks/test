@@ -22,5 +22,5 @@ actual=${actual%%[[:space:]]}
 if [[ -n "${it}" ]] ; then
     [[ "${actual}" == "${expected}" ]] && echo 0 || echo 1
 else
-    [[ "${actual}" == "${expected}" ]] && exit 0 || exit 1
+#    [[ "${actual}" == "${expected}" ]] && exit 0 || exit 1
 fi
