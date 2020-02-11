@@ -5,11 +5,6 @@
 
 ARG BASETAG=latest
 
-ENV TZ=Asia/Shanghai
-ENV LANG=zh_CN.UTF-8
-ENV LANGUAGE=zh_CN:zh:en_US:en
-ENV LC_ALL=zh_CN.UTF-8
-
 FROM accetto/ubuntu-vnc-xfce:${BASETAG} as stage-install
 
 ### Be sure to use root user
@@ -37,6 +32,11 @@ FROM stage-install as stage-config
 ARG ARG_VNC_USER
 
 ENV VNC_USER=${ARG_VNC_USER:-headless:headless}
+
+ENV TZ=Asia/Shanghai
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN:zh:en_US:en
+ENV LC_ALL=zh_CN.UTF-8
 
 WORKDIR ${HOME}
 SHELL ["/bin/bash", "-c"]
