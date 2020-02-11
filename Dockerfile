@@ -11,9 +11,11 @@ FROM accetto/ubuntu-vnc-xfce:${BASETAG} as stage-install
 USER 0
 
 ### 'apt-get clean' runs automatically
-RUN apt-get update && apt-get install -y \
-        firefox \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update 
+RUN apt-get upgrade
+RUN apt-get updateapt-get install -y firefox
+RUN apt-get install ttf-wqy-microhei ttf-wqy-microhei ttf-wqy-zenhei kde-l10n-zhcn xfonts-wqy
+RUN rm -rf /var/lib/apt/lists/*
 
 ### Alternatively install an explicit Firefox version
 ### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
@@ -57,9 +59,6 @@ COPY [ "./src/create_user_and_fix_permissions.sh", "./src/patch_vnc_startup.*", 
 COPY [ "./src/firefox.plus/*.js", "./src/firefox.plus/*.sh", "./firefox.plus/"]
 COPY [ "./src/firefox.plus/*.svg", "/usr/share/icons/hicolor/scalable/apps/"]
 
-### Change owner
-RUN chown -R ${VNC_USER} ./.mozilla
-
 ### 'sync' mitigates automated build failures
 RUN \
     chmod +x \
@@ -97,10 +96,9 @@ ENV \
   MOZ_FORCE_DISABLE_E10S=${ARG_MOZ_FORCE_DISABLE_E10S:+1} \
   REFRESHED_AT=${ARG_REFRESHED_AT} \
   VERSION_STICKER=${ARG_VERSION_STICKER} \
-  VNC_BLACKLIST_THRESHOLD=${
-  :-20} \
+  VNC_BLACKLIST_THRESHOLD=${ARG_VNC_BLACKLIST_THRESHOLD:-20} \
   VNC_BLACKLIST_TIMEOUT=${ARG_VNC_BLACKLIST_TIMEOUT:-0} \
-  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1920x1080}
+  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1024x768}
 
 ### Preconfigure Xfce
 COPY [ "./src/home/Desktop", "./Desktop/" ]
