@@ -5,17 +5,20 @@
 
 ARG BASETAG=latest
 
+ENV TZ=Asia/Shanghai
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN:zh:en_US:en
+ENV LC_ALL=zh_CN.UTF-8
+
 FROM accetto/ubuntu-vnc-xfce:${BASETAG} as stage-install
 
 ### Be sure to use root user
 USER 0
 
 ### 'apt-get clean' runs automatically
-RUN apt-get update 
-RUN apt-get upgrade
-RUN apt-get updateapt-get install -y firefox
-RUN apt-get install ttf-wqy-microhei ttf-wqy-microhei ttf-wqy-zenhei kde-l10n-zhcn xfonts-wqy
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+        firefox \
+    && rm -rf /var/lib/apt/lists/*
 
 ### Alternatively install an explicit Firefox version
 ### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
@@ -35,11 +38,6 @@ ARG ARG_VNC_USER
 
 ENV VNC_USER=${ARG_VNC_USER:-headless:headless}
 
-ENV TZ=Asia/Shanghai
-ENV LANG=zh_CN.UTF-8
-ENV LANGUAGE=zh_CN:zh:en_US:en
-ENV LC_ALL=zh_CN.UTF-8
-
 WORKDIR ${HOME}
 SHELL ["/bin/bash", "-c"]
 
@@ -58,6 +56,12 @@ COPY [ "./src/firefox.plus/user.js", "./.mozilla/firefox/profile0.default/" ]
 COPY [ "./src/create_user_and_fix_permissions.sh", "./src/patch_vnc_startup.*", "./" ]
 COPY [ "./src/firefox.plus/*.js", "./src/firefox.plus/*.sh", "./firefox.plus/"]
 COPY [ "./src/firefox.plus/*.svg", "/usr/share/icons/hicolor/scalable/apps/"]
+
+### Copy pre-configured Firefox profile
+COPY [ "./src/firefox/profile/", "./.mozilla/" ]
+
+### Change owner
+RUN chown -R ${VNC_USER} ./.mozilla
 
 ### 'sync' mitigates automated build failures
 RUN \
@@ -96,9 +100,10 @@ ENV \
   MOZ_FORCE_DISABLE_E10S=${ARG_MOZ_FORCE_DISABLE_E10S:+1} \
   REFRESHED_AT=${ARG_REFRESHED_AT} \
   VERSION_STICKER=${ARG_VERSION_STICKER} \
-  VNC_BLACKLIST_THRESHOLD=${ARG_VNC_BLACKLIST_THRESHOLD:-20} \
+  VNC_BLACKLIST_THRESHOLD=${
+  :-20} \
   VNC_BLACKLIST_TIMEOUT=${ARG_VNC_BLACKLIST_TIMEOUT:-0} \
-  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1024x768}
+  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1920x1080}
 
 ### Preconfigure Xfce
 COPY [ "./src/home/Desktop", "./Desktop/" ]
